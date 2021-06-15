@@ -1,5 +1,5 @@
 # Azure-AAAService-DelegatePermissions
-Deploys Azure Lighthouse delegated permissions from Softcat Plc tenant to the customer's tenant to allow deployment of the AAA service into the encironment.
+Deploys Azure Lighthouse delegated permissions from Softcat Plc tenant to the customer's tenant to allow deployment of the AAA service into the environment.
 
 # Azure Deployment
 Use the button below to deploy this template to an Azure account.
