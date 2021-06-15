@@ -1,0 +1,70 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {  
+        "authorizations": {
+            "type": "array",
+            "metadata": {
+                "description": "Specify an array of objects, containing tuples of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers."
+            },
+            "defaultValue": [
+                { 
+                    "principalId": "675a7170-187d-4191-abdc-68b1380e8ecf", 
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+                    "principalIdDisplayName": "Matthew Steele" 
+                },
+                { 
+                    "principalId": "1eb0b52d-f237-49f6-be44-f971ba7b463e", 
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+                    "principalIdDisplayName": "Kevin Barlow" 
+                },
+                { 
+                    "principalId": "1081124a-2ca3-4312-82dd-9b59066278a5", 
+                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+                    "principalIdDisplayName": "Automation App Service Principal" 
+                }   
+            ]
+        } 
+    },
+    "variables": {
+        "mspOfferName": "Softcat AAA Deployment Service",
+        "mspRegistrationName": "[guid(variables('mspOfferName'))]",
+        "mspAssignmentName": "[guid(variables('mspOfferName'))]",
+        "mspOfferDescription": "Provides delegated reader access to susbcriptions to allow Softcat to analyse and provide a migration report to CSP",
+        "managedByTenantId": "c3d431f1-3e02-4c62-a825-79cd8f9e2053"              
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ManagedServices/registrationDefinitions",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('mspRegistrationName')]",
+            "properties": {
+                "registrationDefinitionName": "[variables('mspOfferName')]",
+                "description": "[variables('mspOfferDescription')]",
+                "managedByTenantId": "[variables('managedByTenantId')]",
+                "authorizations": "[parameters('authorizations')]"
+            }
+        },
+        {
+            "type": "Microsoft.ManagedServices/registrationAssignments",
+            "apiVersion": "2019-09-01",
+            "name": "[variables('mspAssignmentName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+            ],
+            "properties": {
+                "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+            }
+        }
+    ],
+    "outputs": {
+        "mspOfferName": {
+            "type": "string",
+            "value": "[concat('Managed by', ' ', variables('mspOfferName'))]"
+        },
+        "authorizations": {
+            "type": "array",
+            "value": "[parameters('authorizations')]"
+        }
+    }
+}
