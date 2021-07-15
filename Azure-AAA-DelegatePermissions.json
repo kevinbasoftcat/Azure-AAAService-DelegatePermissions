@@ -15,7 +15,7 @@
                 },
                 { 
                     "principalId": "cb581543-3cc0-43e0-a683-785eb8e32e0b", 
-                    "roleDefinitionId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
                     "principalIdDisplayName": "Lighthouse - Azure consultants" 
                 }    
             ]
